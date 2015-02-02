@@ -7,6 +7,9 @@ package view;
 
 
 import controller.Controller;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,8 +20,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -35,29 +41,55 @@ public class View {
         
     private Controller ctrl;
 
-    public View(Stage primaryStage) {      
+    public View(Stage primaryStage) {
         this.primaryStage = primaryStage;
-       
+
     }
 
-    public void start(Controller controller) {        
+   
+
+    public void start(Controller controller) {    
 
         this.ctrl = controller;
         BorderPane boot = new BorderPane();
         VBox topContainer = new VBox();  //Creates a container to hold all Menu Objects.
-        MenuBar mainMenu;  
+        MenuBar mainMenu;
         mainMenu = new MenuBar();
         ToolBar toolBar = new ToolBar();
-
+        ImageView imv = new ImageView();
         topContainer.getChildren().add(mainMenu);
         topContainer.getChildren().add(toolBar);
-
+        ScrollPane sp = new ScrollPane();
         boot.setTop(topContainer);
 
         Menu graph = new Menu("Display graph");
-        MenuItem openFile = new MenuItem("Open File");
+        MenuItem GO = new MenuItem("GO");
 
-        openFile.setOnAction(new EventHandler<ActionEvent>() {
+        graph.getItems().addAll(GO);
+
+        Menu help = new Menu("Help");
+        MenuItem visitWebsite = new MenuItem("Visit Website");
+        help.getItems().add(visitWebsite);
+
+        Menu exit = new Menu("Exit");
+        MenuItem sure = new MenuItem("Sure ?");
+        exit.getItems().add(sure);
+
+        sure.setOnAction((ActionEvent e) -> {
+            Platform.exit();
+        });
+
+        mainMenu.getMenus().addAll(graph, help, exit);
+
+        Scene scene = new Scene(boot, 800, 600);
+
+        primaryStage.setTitle("Welcome to TraceTheNet");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+        GO.setOnAction(new EventHandler<ActionEvent>() {
+       MenuItem openFile = new MenuItem("Open File");
+
             @Override
             public void handle(ActionEvent e) {
 
@@ -94,6 +126,15 @@ public class View {
                 submit.setOnAction((ActionEvent e1) -> {
                     if ((name.getText() != null && !name.getText().isEmpty())) {
                         label.setText(name.getText() + " " + " thank you");
+                        try {
+                            ctrl.getModel().createPng(name.getText());
+                            Image img = new Image("file:graph.png");
+                            imv.setImage(img);
+                        } catch (IOException ex) {
+                            Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     } else {
                         label.setText("You have not enter an IP adress.");
                     }
@@ -103,41 +144,20 @@ public class View {
                     name.clear();
                 });
 
-                Scene scene = new Scene(grid, 800, 600);
+                Scene vb = new Scene(new VBox(), 800, 600);
+                HBox hb1 = new HBox();
+                HBox hb2 = new HBox();
+                sp.setContent(imv);
+                hb1.getChildren().addAll(mainMenu);
+                hb2.getChildren().addAll(grid);
+                ((VBox) vb.getRoot()).getChildren().addAll(mainMenu, hb1, hb2,sp);
+
                 primaryStage.setTitle("Graph");
-                primaryStage.setScene(scene);
+                primaryStage.setScene(vb);
                 primaryStage.show();
 
             }
 
         });
-        graph.getItems().addAll(openFile);
-
-//Create and add the "Edit" sub-menu options.
-        Menu edit = new Menu("Edit");
-        MenuItem properties = new MenuItem("Properties");
-        edit.getItems().add(properties);
-
-//Create and add the "Help" sub-menu options.
-        Menu help = new Menu("Help");
-        MenuItem visitWebsite = new MenuItem("Visit Website");
-        help.getItems().add(visitWebsite);
-
-        Menu exit = new Menu("Exit");
-        MenuItem sure = new MenuItem("Sure ?");
-        exit.getItems().add(sure);
-
-        sure.setOnAction((ActionEvent e) -> {
-            Platform.exit();
-        });
-
-        mainMenu.getMenus().addAll(graph, edit, help, exit);
-
-        Scene scene = new Scene(boot, 800, 600);
-
-        primaryStage.setTitle("Welcome to TraceTheNet");
-        primaryStage.setScene(scene);
-        primaryStage.show();
     }
-
 }

@@ -24,11 +24,18 @@ private Model model;
 public void start(Stage primaryStage) throws IOException, UnknownHostException, InterruptedException {
 model=new Model();
 view = new View(primaryStage);
-model.createPng("google.com");
+
+//model.createPng("google.com");
+
 view.start(this);
 }
 public static void main(String[] args) {
 launch(args);
+}
+public Model getModel(){
+return this.model;
+
+
 }
 
     public void setScene(Scene scene) {
