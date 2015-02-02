@@ -35,34 +35,19 @@ public class View {
         
     private Controller ctrl;
 
-<<<<<<< HEAD
-    private final Stage primaryStage;
-
-    private Controller ctrl;
-
     public View(Stage primaryStage) {
         this.primaryStage = primaryStage;
 
     }
 
-    public void start(Controller controller) {
-=======
-    public View(Stage primaryStage) {      
-        this.primaryStage = primaryStage;
-       
-    }
+   
 
-    public void start(Controller controller) {        
->>>>>>> 83306a9886a0fc818e943faf0a424a9ed0eed54f
+    public void start(Controller controller) {    
 
         this.ctrl = controller;
         BorderPane boot = new BorderPane();
         VBox topContainer = new VBox();  //Creates a container to hold all Menu Objects.
-<<<<<<< HEAD
         MenuBar mainMenu;
-=======
-        MenuBar mainMenu;  
->>>>>>> 83306a9886a0fc818e943faf0a424a9ed0eed54f
         mainMenu = new MenuBar();
         ToolBar toolBar = new ToolBar();
 
@@ -72,7 +57,6 @@ public class View {
         boot.setTop(topContainer);
 
         Menu graph = new Menu("Display graph");
-<<<<<<< HEAD
         MenuItem GO = new MenuItem("GO");
 
         graph.getItems().addAll(GO);
@@ -98,11 +82,8 @@ public class View {
         primaryStage.show();
 
         GO.setOnAction(new EventHandler<ActionEvent>() {
-=======
-        MenuItem openFile = new MenuItem("Open File");
+       MenuItem openFile = new MenuItem("Open File");
 
-        openFile.setOnAction(new EventHandler<ActionEvent>() {
->>>>>>> 83306a9886a0fc818e943faf0a424a9ed0eed54f
             @Override
             public void handle(ActionEvent e) {
 
@@ -135,7 +116,6 @@ public class View {
                 GridPane.setConstraints(label, 0, 3);
                 GridPane.setColumnSpan(label, 2);
                 grid.getChildren().add(label);
-<<<<<<< HEAD
 
                 submit.setOnAction((ActionEvent e1) -> {
                     if ((name.getText() != null && !name.getText().isEmpty())) {
@@ -164,57 +144,5 @@ public class View {
             }
 
         });
-
-=======
-
-                submit.setOnAction((ActionEvent e1) -> {
-                    if ((name.getText() != null && !name.getText().isEmpty())) {
-                        label.setText(name.getText() + " " + " thank you");
-                    } else {
-                        label.setText("You have not enter an IP adress.");
-                    }
-                });
-
-                clear.setOnAction((ActionEvent e1) -> {
-                    name.clear();
-                });
-
-                Scene scene = new Scene(grid, 800, 600);
-                primaryStage.setTitle("Graph");
-                primaryStage.setScene(scene);
-                primaryStage.show();
-
-            }
-
-        });
-        graph.getItems().addAll(openFile);
-
-//Create and add the "Edit" sub-menu options.
-        Menu edit = new Menu("Edit");
-        MenuItem properties = new MenuItem("Properties");
-        edit.getItems().add(properties);
-
-//Create and add the "Help" sub-menu options.
-        Menu help = new Menu("Help");
-        MenuItem visitWebsite = new MenuItem("Visit Website");
-        help.getItems().add(visitWebsite);
-
-        Menu exit = new Menu("Exit");
-        MenuItem sure = new MenuItem("Sure ?");
-        exit.getItems().add(sure);
-
-        sure.setOnAction((ActionEvent e) -> {
-            Platform.exit();
-        });
-
-        mainMenu.getMenus().addAll(graph, edit, help, exit);
-
-        Scene scene = new Scene(boot, 800, 600);
-
-        primaryStage.setTitle("Welcome to TraceTheNet");
-        primaryStage.setScene(scene);
-        primaryStage.show();
->>>>>>> 83306a9886a0fc818e943faf0a424a9ed0eed54f
     }
-
 }
