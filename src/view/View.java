@@ -5,7 +5,24 @@
  */
 package view;
 
+
 import controller.Controller;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToolBar;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -13,15 +30,114 @@ import javafx.stage.Stage;
  * @author kevin
  */
 public class View {
+    
+    private final Stage primaryStage;
+        
+    private Controller ctrl;
 
-    public View(Stage primaryStage) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public View(Stage primaryStage) {      
+        this.primaryStage = primaryStage;
+       
     }
 
-    
+    public void start(Controller controller) {        
 
-    public void start(Controller aThis) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.ctrl = controller;
+        BorderPane boot = new BorderPane();
+        VBox topContainer = new VBox();  //Creates a container to hold all Menu Objects.
+        MenuBar mainMenu;  
+        mainMenu = new MenuBar();
+        ToolBar toolBar = new ToolBar();
+
+        topContainer.getChildren().add(mainMenu);
+        topContainer.getChildren().add(toolBar);
+
+        boot.setTop(topContainer);
+
+        Menu graph = new Menu("Display graph");
+        MenuItem openFile = new MenuItem("Open File");
+
+        openFile.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+
+                Label label1 = new Label("Name:");
+                TextField textField = new TextField();
+                HBox hb = new HBox();
+                hb.getChildren().addAll(label1, textField);
+                hb.setSpacing(10);
+
+                GridPane grid = new GridPane();
+                grid.setPadding(new Insets(10, 10, 10, 10));
+                grid.setVgap(5);
+                grid.setHgap(5);
+
+                final TextField name = new TextField();
+                name.setPromptText("Adress IP");
+                name.getText();
+                GridPane.setConstraints(name, 0, 0);
+                grid.getChildren().add(name);
+
+                Button submit = new Button("Submit");
+                GridPane.setConstraints(submit, 1, 0);
+                grid.getChildren().add(submit);
+
+                Button clear = new Button("Clear");
+                GridPane.setConstraints(clear, 1, 1);
+                grid.getChildren().add(clear);
+
+                final Label label = new Label();
+                GridPane.setConstraints(label, 0, 3);
+                GridPane.setColumnSpan(label, 2);
+                grid.getChildren().add(label);
+
+                submit.setOnAction((ActionEvent e1) -> {
+                    if ((name.getText() != null && !name.getText().isEmpty())) {
+                        label.setText(name.getText() + " " + " thank you");
+                    } else {
+                        label.setText("You have not enter an IP adress.");
+                    }
+                });
+
+                clear.setOnAction((ActionEvent e1) -> {
+                    name.clear();
+                });
+
+                Scene scene = new Scene(grid, 800, 600);
+                primaryStage.setTitle("Graph");
+                primaryStage.setScene(scene);
+                primaryStage.show();
+
+            }
+
+        });
+        graph.getItems().addAll(openFile);
+
+//Create and add the "Edit" sub-menu options.
+        Menu edit = new Menu("Edit");
+        MenuItem properties = new MenuItem("Properties");
+        edit.getItems().add(properties);
+
+//Create and add the "Help" sub-menu options.
+        Menu help = new Menu("Help");
+        MenuItem visitWebsite = new MenuItem("Visit Website");
+        help.getItems().add(visitWebsite);
+
+        Menu exit = new Menu("Exit");
+        MenuItem sure = new MenuItem("Sure ?");
+        exit.getItems().add(sure);
+
+        sure.setOnAction((ActionEvent e) -> {
+            Platform.exit();
+        });
+
+        mainMenu.getMenus().addAll(graph, edit, help, exit);
+
+        Scene scene = new Scene(boot, 800, 600);
+
+        primaryStage.setTitle("Welcome to TraceTheNet");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
-    
+
 }

@@ -8,6 +8,7 @@ package controller;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.Model;
 import view.View;
@@ -29,5 +30,17 @@ view.start(this);
 public static void main(String[] args) {
 launch(args);
 }
+
+    public void setScene(Scene scene) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void setTitle(String graph) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void show() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }
