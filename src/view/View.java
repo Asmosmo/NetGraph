@@ -5,7 +5,6 @@
  */
 package view;
 
-
 import controller.Controller;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -29,6 +28,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -36,9 +36,9 @@ import javafx.stage.Stage;
  * @author kevin
  */
 public class View {
-    
+
     private final Stage primaryStage;
-        
+
     private Controller ctrl;
 
     public View(Stage primaryStage) {
@@ -46,9 +46,7 @@ public class View {
 
     }
 
-   
-
-    public void start(Controller controller) {    
+    public void start(Controller controller) {
 
         this.ctrl = controller;
         BorderPane boot = new BorderPane();
@@ -62,17 +60,17 @@ public class View {
         ScrollPane sp = new ScrollPane();
         boot.setTop(topContainer);
 
-        Menu graph = new Menu("Display graph");
+        Menu graph = new Menu("Lancer");
         MenuItem GO = new MenuItem("GO");
 
         graph.getItems().addAll(GO);
 
-        Menu help = new Menu("Help");
-        MenuItem visitWebsite = new MenuItem("Visit Website");
-        help.getItems().add(visitWebsite);
+        Menu help = new Menu("Divers");
+        MenuItem aide = new MenuItem("Aide");
+        help.getItems().add(aide);
 
-        Menu exit = new Menu("Exit");
-        MenuItem sure = new MenuItem("Sure ?");
+        Menu exit = new Menu("Quitter");
+        MenuItem sure = new MenuItem("Sûr ?");
         exit.getItems().add(sure);
 
         sure.setOnAction((ActionEvent e) -> {
@@ -83,12 +81,11 @@ public class View {
 
         Scene scene = new Scene(boot, 800, 600);
 
-        primaryStage.setTitle("Welcome to TraceTheNet");
+        primaryStage.setTitle("Bienvenue dans TraceNet");
         primaryStage.setScene(scene);
         primaryStage.show();
 
         GO.setOnAction(new EventHandler<ActionEvent>() {
-       MenuItem openFile = new MenuItem("Open File");
 
             @Override
             public void handle(ActionEvent e) {
@@ -105,16 +102,16 @@ public class View {
                 grid.setHgap(5);
 
                 final TextField name = new TextField();
-                name.setPromptText("Adress IP");
+                name.setPromptText("Adresse IP");
                 name.getText();
                 GridPane.setConstraints(name, 0, 0);
                 grid.getChildren().add(name);
 
-                Button submit = new Button("Submit");
+                Button submit = new Button("Entrer");
                 GridPane.setConstraints(submit, 1, 0);
                 grid.getChildren().add(submit);
 
-                Button clear = new Button("Clear");
+                Button clear = new Button("Effacer");
                 GridPane.setConstraints(clear, 1, 1);
                 grid.getChildren().add(clear);
 
@@ -125,7 +122,7 @@ public class View {
 
                 submit.setOnAction((ActionEvent e1) -> {
                     if ((name.getText() != null && !name.getText().isEmpty())) {
-                        label.setText(name.getText() + " " + " thank you");
+                        label.setText("Traçage du graphe " + name.getText());
                         try {
                             ctrl.getModel().createPng(name.getText());
                             Image img = new Image("file:graph.png");
@@ -136,7 +133,7 @@ public class View {
                             Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     } else {
-                        label.setText("You have not enter an IP adress.");
+                        label.setText("Vous n'avez pas entré d'adresse IP.");
                     }
                 });
 
@@ -147,17 +144,36 @@ public class View {
                 Scene vb = new Scene(new VBox(), 800, 600);
                 HBox hb1 = new HBox();
                 HBox hb2 = new HBox();
+
                 sp.setContent(imv);
+
                 hb1.getChildren().addAll(mainMenu);
                 hb2.getChildren().addAll(grid);
                 ((VBox) vb.getRoot()).getChildren().addAll(mainMenu, hb1, hb2,sp);
 
-                primaryStage.setTitle("Graph");
+                primaryStage.setTitle("Graphe");
                 primaryStage.setScene(vb);
                 primaryStage.show();
 
             }
 
+        });
+
+        aide.setOnAction((ActionEvent e) -> {
+            Text t = new Text();
+            t.setText("Bienvenue dans TraceNet.\n\n\nCette application affiche une représentation des connexions intermédiaires"
+                    + "entre un hote local et Internet.\n\n\nElle utilise l'interface graphique javaFx.\n\n\n"
+                    + "Merci de rentrer une adresse IP de ce format : nomdedomaine.extension ou en dur.\n");
+            Scene vb = new Scene(new VBox(), 800, 600);
+            HBox hb1 = new HBox();
+            HBox hb2 = new HBox();
+
+            hb1.getChildren().addAll(mainMenu);
+            ((VBox) vb.getRoot()).getChildren().addAll(mainMenu, hb1, hb2,t);
+            
+            primaryStage.setTitle("Aide");
+            primaryStage.setScene(vb);
+            primaryStage.show();
         });
     }
 }
