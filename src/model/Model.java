@@ -45,7 +45,7 @@ public class Model {
         String line = "";
         Pattern ipRegEx = Pattern.compile("(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})");
         while ((line = buf.readLine()) != null) {
-            System.out.println(line);
+            //System.out.println(line);
             Matcher ip = ipRegEx.matcher(line);
             while (ip.find()) {
                 children.add(ip.group());
@@ -63,7 +63,7 @@ public class Model {
             children.clear();
         }
         dot = dot + "}";
-        System.out.println(dot);
+        //System.out.println(dot);
         try (PrintWriter out = new PrintWriter("dotFile.dot")) {
             
             out.println(dot);   
